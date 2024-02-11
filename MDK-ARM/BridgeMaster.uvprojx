@@ -583,11 +583,6 @@
           <GroupName>Inc/</GroupName>
           <Files>
             <File>
-              <FileName>config.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Inc\config.h</FilePath>
-            </File>
-            <File>
               <FileName>led.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Inc\led.c</FilePath>
@@ -596,6 +591,11 @@
               <FileName>led.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\Inc\led.h</FilePath>
+            </File>
+            <File>
+              <FileName>colors.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Inc\colors.h</FilePath>
             </File>
           </Files>
         </Group>

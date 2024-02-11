@@ -1,8 +1,16 @@
 #include "main.h"
-#include "config.h"
-#include "led.h"
+#include <stdbool.h>
 
 unsigned int buffer[LED_COUNT];
+
+/* ****************************************************** */
+/* Beams    Parameter                                     */
+/* ****************************************************** */
+ledBeam beamBuffer[BRIDGE_BEAMS_NUM] = {
+{20, 0, false}, {10, 0, true}, {8, 0, false},
+{5, 0, true}, {8, 0, false}, {10, 0, true},
+{20, 0, false}
+};
 
 void spi32(unsigned int c) {
 	// Create pin state variable
@@ -31,12 +39,76 @@ void sendData(unsigned int *ledArray) {
 		spi32(ledArray[i]);
 	}
 	spi32(0xffffffff);
-	//spi32(0xffffffff);
 }
 
 void clearStrip(void) {
 	for(int i = 0; i < LED_COUNT; i++) {
 		buffer[i] = LED_COLOR_RESET;
 	}
+	sendData(buffer);
+}
+
+void idle(void) {
+	for(int i = 0; i < LED_COUNT; i++) {
+		buffer[i] = i % 2 == 0 ? RED : WHITE;
+}
+	sendData(buffer);
+}
+
+/*
+60+59 = 119 LEDs
+Beams --> 10 LEDs per bema
+Total LEDs used --> 110 leds
+*/
+void seeFrames() {
+	int counter = 0;
+	int toggle = 0;
+	for(int j=0; j<BRIDGE_BEAMS_NUM; j++) {
+		toggle = !toggle;
+		for(int i=0; i<beamBuffer[j].ledCount; i++) {
+			buffer[counter] = toggle ? RED : WHITE;
+			counter++;
+		}
+	}
+	for(int k=counter; k<LED_COUNT; k++) {
+		buffer[k] = BLUE;
+	}
+	sendData(buffer);
+}
+
+//percentage: 0 to 100 ints
+//tells number of leds to turn on
+int getFrameValue(ledBeam beam, float percentage) {
+	float x = (percentage*beam.ledCount)/100;
+	return (int)x;
+}
+
+//sets frame to beamBuffer
+void setFrames(float data[BRIDGE_BEAMS_NUM]) {
+	for(int i=0; i<BRIDGE_BEAMS_NUM; i++) {
+		beamBuffer[i].ledEnabled = getFrameValue(beamBuffer[i], data[i]);
+	}
+}
+
+void writeFrames() {
+	clearStrip();
+	int counter = 0, flag = 1, start = 0, end = 0;
+	for(int i=0; i<BRIDGE_BEAMS_NUM; i++) {
+		if(beamBuffer[i].reverse) {
+			start = beamBuffer[i].ledEnabled;
+			end = 0;
+			flag = -1;
+		} else {
+			start = 0;
+			end = beamBuffer[i].ledEnabled;
+			flag = 1;
+		}
+		for(int k=start; k<end; k+=flag) {
+			buffer[counter] = RED;
+			counter++;
+		}
+		counter += beamBuffer[i].ledCount-beamBuffer[i].ledEnabled;
+	}
+	
 	sendData(buffer);
 }

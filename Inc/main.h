@@ -31,7 +31,11 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdbool.h>
+#include "colors.h"
+#include "led.h"
+#include <stdio.h>
+#include <stdlib.h>
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

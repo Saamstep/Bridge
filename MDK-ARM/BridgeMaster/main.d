@@ -30,6 +30,7 @@ bridgemaster\main.o: X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Dri
 bridgemaster\main.o: X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr.h
 bridgemaster\main.o: X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr_ex.h
 bridgemaster\main.o: C:\Apps\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
-bridgemaster\main.o: ../Inc/config.h
+bridgemaster\main.o: ../Inc/colors.h
 bridgemaster\main.o: ../Inc/led.h
-bridgemaster\main.o: ../Inc/led.h
+bridgemaster\main.o: C:\Apps\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+bridgemaster\main.o: C:\Apps\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h

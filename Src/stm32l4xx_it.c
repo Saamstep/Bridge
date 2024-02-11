@@ -20,7 +20,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32l4xx_it.h"
-#include "led.h"
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 /* USER CODE END Includes */
@@ -210,6 +210,7 @@ void EXTI0_IRQHandler(void)
   HAL_GPIO_EXTI_IRQHandler(CENTER_Pin);
   /* USER CODE BEGIN EXTI0_IRQn 1 */
   clearStrip();
+	seeFrames();
   /* USER CODE END EXTI0_IRQn 1 */
 }
 

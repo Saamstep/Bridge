@@ -29,6 +29,8 @@ bridgemaster\led.o: X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Driv
 bridgemaster\led.o: X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_i2c_ex.h
 bridgemaster\led.o: X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr.h
 bridgemaster\led.o: X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr_ex.h
-bridgemaster\led.o: ..\Inc\config.h
+bridgemaster\led.o: C:\Apps\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+bridgemaster\led.o: ..\Inc\colors.h
 bridgemaster\led.o: ..\Inc\led.h
-bridgemaster\led.o: ..\Inc\led.h
+bridgemaster\led.o: C:\Apps\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+bridgemaster\led.o: C:\Apps\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
