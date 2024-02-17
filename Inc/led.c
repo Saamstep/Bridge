@@ -1,15 +1,24 @@
 #include "main.h"
 #include <stdbool.h>
+#include <string.h>
 
 unsigned int buffer[LED_COUNT];
 
 /* ****************************************************** */
 /* Beams    Parameter                                     */
 /* ****************************************************** */
+//ledBeam beamBuffer[BRIDGE_BEAMS_NUM] = {
+//{20, 0, false}, {10, 0, true}, {8, 0, false},
+//{5, 0, true}, {8, 0, false}, {10, 0, true},
+//{20, 0, false}, {20, 0, true}, {10, 0, false}
+//};
+
 ledBeam beamBuffer[BRIDGE_BEAMS_NUM] = {
-{20, 0, false}, {10, 0, true}, {8, 0, false},
-{5, 0, true}, {8, 0, false}, {10, 0, true},
-{20, 0, false}
+{13, 0, false},{13, 0, true},
+{13, 0, false},{13, 0, true},
+{13, 0, false},{13, 0, true},
+{13, 0, false},{13, 0, true},
+{13, 0, false}
 };
 
 void spi32(unsigned int c) {
@@ -83,6 +92,19 @@ int getFrameValue(ledBeam beam, float percentage) {
 	return (int)x;
 }
 
+int getColor(ledBeam beam) {
+	int percentage = ((float)beam.ledEnabled/(float)beam.ledCount)*100;
+	if(percentage >= 0 && percentage <= 33) {
+		return BLUE;
+	} else if(percentage > 33 && percentage <= 66) {
+		return PURPLE;
+	} else if(percentage > 66) {
+		return RED;
+	} else {
+		return WHITE;
+	}
+}
+
 //sets frame to beamBuffer
 void setFrames(float data[BRIDGE_BEAMS_NUM]) {
 	for(int i=0; i<BRIDGE_BEAMS_NUM; i++) {
@@ -92,22 +114,24 @@ void setFrames(float data[BRIDGE_BEAMS_NUM]) {
 
 void writeFrames() {
 	clearStrip();
-	int counter = 0, flag = 1, start = 0, end = 0;
+	int counter = 0;
 	for(int i=0; i<BRIDGE_BEAMS_NUM; i++) {
-		if(beamBuffer[i].reverse) {
-			start = beamBuffer[i].ledEnabled;
-			end = 0;
-			flag = -1;
-		} else {
-			start = 0;
-			end = beamBuffer[i].ledEnabled;
-			flag = 1;
-		}
-		for(int k=start; k<end; k+=flag) {
-			buffer[counter] = RED;
-			counter++;
-		}
+		if(!beamBuffer[i].reverse) {
+			//===IF LED strip is NOT reversed===
+			for(int k=0; k<beamBuffer[i].ledEnabled; k++) {
+				buffer[counter] = getColor(beamBuffer[i]);
+				counter++;
+			}
 		counter += beamBuffer[i].ledCount-beamBuffer[i].ledEnabled;
+		} else {
+			//===IF LED strip IS reversed===
+			int min = beamBuffer[i].ledEnabled;
+			int COLOR = getColor(beamBuffer[i]);
+			for(int k=0; k<beamBuffer[i].ledCount; k++) {
+				buffer[counter] = k >= min ? COLOR : LED_COLOR_RESET;
+				counter++;
+			}
+		}
 	}
 	
 	sendData(buffer);

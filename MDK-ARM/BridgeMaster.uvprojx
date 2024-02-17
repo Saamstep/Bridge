@@ -588,11 +588,6 @@
               <FilePath>..\Inc\led.c</FilePath>
             </File>
             <File>
-              <FileName>led.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Inc\led.h</FilePath>
-            </File>
-            <File>
               <FileName>colors.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\Inc\colors.h</FilePath>

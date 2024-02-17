@@ -1,7 +1,7 @@
 Dependencies for Project 'BridgeMaster', Target 'BridgeMaster': (DO NOT MODIFY !)
 CompilerVersion: 5060960::V5.06 update 7 (build 960)::.\ARMCC
 F (startup_stm32l476xx.s)(0x65BD59EC)(--cpu Cortex-M4.fp.sp -g --apcs=interwork -I.\RTE\_BridgeMaster-IC:\Apps\Keil_v5\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Apps\Keil_v5\Packs\Keil\STM32L4xx_DFP\2.6.1\Drivers\CMSIS\Device\ST\STM32L4xx\Include--pd "__UVISION_VERSION SETA 536" --pd "_RTE_ SETA 1" --pd "STM32L476xx SETA 1" --pd "_RTE_ SETA 1"--list startup_stm32l476xx.lst --xref -o bridgemaster\startup_stm32l476xx.o --depend bridgemaster\startup_stm32l476xx.d)
-F (../Src/main.c)(0x65C823F2)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I .\BridgeMaster -I ../Inc -I X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Inc -I X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/CMSIS/Device/ST/STM32L4xx/Include -I X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/CMSIS/Include-I.\RTE\_BridgeMaster-IC:\Apps\Keil_v5\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Apps\Keil_v5\Packs\Keil\STM32L4xx_DFP\2.6.1\Drivers\CMSIS\Device\ST\STM32L4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32L476xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32L476xx-o bridgemaster\main.o --omf_browse bridgemaster\main.crf --depend bridgemaster\main.d)
+F (../Src/main.c)(0x65D008AA)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I .\BridgeMaster -I ../Inc -I X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Inc -I X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/CMSIS/Device/ST/STM32L4xx/Include -I X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/CMSIS/Include-I.\RTE\_BridgeMaster-IC:\Apps\Keil_v5\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Apps\Keil_v5\Packs\Keil\STM32L4xx_DFP\2.6.1\Drivers\CMSIS\Device\ST\STM32L4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32L476xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32L476xx-o bridgemaster\main.o --omf_browse bridgemaster\main.crf --depend bridgemaster\main.d)
 I (../Inc/main.h)(0x65C8230A)
 I (X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h)(0x62FD2EC4)
 I (../Inc/stm32l4xx_hal_conf.h)(0x65BD59E1)
@@ -33,10 +33,10 @@ I (X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL
 I (X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr_ex.h)(0x62FD2EC7)
 I (C:\Apps\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025F66C)
 I (../Inc/colors.h)(0x65C80DE9)
-I (../Inc/led.h)(0x65C81889)
+I (../Inc/led.h)(0x65D00794)
 I (C:\Apps\Keil_v5\ARM\ARMCC\include\stdio.h)(0x6025F664)
 I (C:\Apps\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x6025F664)
-F (../Src/stm32l4xx_it.c)(0x65C80E0E)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I .\BridgeMaster -I ../Inc -I X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Inc -I X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/CMSIS/Device/ST/STM32L4xx/Include -I X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/CMSIS/Include-I.\RTE\_BridgeMaster-IC:\Apps\Keil_v5\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Apps\Keil_v5\Packs\Keil\STM32L4xx_DFP\2.6.1\Drivers\CMSIS\Device\ST\STM32L4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32L476xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32L476xx-o bridgemaster\stm32l4xx_it.o --omf_browse bridgemaster\stm32l4xx_it.crf --depend bridgemaster\stm32l4xx_it.d)
+F (../Src/stm32l4xx_it.c)(0x65CFE62F)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I .\BridgeMaster -I ../Inc -I X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Inc -I X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/CMSIS/Device/ST/STM32L4xx/Include -I X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/CMSIS/Include-I.\RTE\_BridgeMaster-IC:\Apps\Keil_v5\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Apps\Keil_v5\Packs\Keil\STM32L4xx_DFP\2.6.1\Drivers\CMSIS\Device\ST\STM32L4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32L476xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32L476xx-o bridgemaster\stm32l4xx_it.o --omf_browse bridgemaster\stm32l4xx_it.crf --depend bridgemaster\stm32l4xx_it.d)
 I (../Inc/main.h)(0x65C8230A)
 I (X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h)(0x62FD2EC4)
 I (../Inc/stm32l4xx_hal_conf.h)(0x65BD59E1)
@@ -68,7 +68,7 @@ I (X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL
 I (X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr_ex.h)(0x62FD2EC7)
 I (C:\Apps\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025F66C)
 I (../Inc/colors.h)(0x65C80DE9)
-I (../Inc/led.h)(0x65C81889)
+I (../Inc/led.h)(0x65D00794)
 I (C:\Apps\Keil_v5\ARM\ARMCC\include\stdio.h)(0x6025F664)
 I (C:\Apps\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x6025F664)
 I (../Inc/stm32l4xx_it.h)(0x65BD59E0)
@@ -104,7 +104,7 @@ I (X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL
 I (X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr_ex.h)(0x62FD2EC7)
 I (C:\Apps\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025F66C)
 I (../Inc/colors.h)(0x65C80DE9)
-I (../Inc/led.h)(0x65C81889)
+I (../Inc/led.h)(0x65D00794)
 I (C:\Apps\Keil_v5\ARM\ARMCC\include\stdio.h)(0x6025F664)
 I (C:\Apps\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x6025F664)
 F (X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.c)(0x62FD2ED2)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Inc -I X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Inc -I X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/CMSIS/Device/ST/STM32L4xx/Include -I X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/CMSIS/Include-I.\RTE\_BridgeMaster-IC:\Apps\Keil_v5\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Apps\Keil_v5\Packs\Keil\STM32L4xx_DFP\2.6.1\Drivers\CMSIS\Device\ST\STM32L4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32L476xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32L476xx-o bridgemaster\stm32l4xx_hal_tim.o --omf_browse bridgemaster\stm32l4xx_hal_tim.crf --depend bridgemaster\stm32l4xx_hal_tim.d)
@@ -629,7 +629,7 @@ I (X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL
 I (X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_i2c_ex.h)(0x62FD2EC6)
 I (X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr.h)(0x62FD2EC7)
 I (X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr_ex.h)(0x62FD2EC7)
-F (..\Inc\led.c)(0x65C824F6)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Inc -I X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Inc -I X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/CMSIS/Device/ST/STM32L4xx/Include -I X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/CMSIS/Include-I.\RTE\_BridgeMaster-IC:\Apps\Keil_v5\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Apps\Keil_v5\Packs\Keil\STM32L4xx_DFP\2.6.1\Drivers\CMSIS\Device\ST\STM32L4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32L476xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32L476xx-o bridgemaster\led.o --omf_browse bridgemaster\led.crf --depend bridgemaster\led.d)
+F (..\Inc\led.c)(0x65D009C3)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Inc -I X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Inc -I X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/CMSIS/Device/ST/STM32L4xx/Include -I X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/CMSIS/Include-I.\RTE\_BridgeMaster-IC:\Apps\Keil_v5\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Apps\Keil_v5\Packs\Keil\STM32L4xx_DFP\2.6.1\Drivers\CMSIS\Device\ST\STM32L4xx\Include-D__UVISION_VERSION="536" -D_RTE_ -DSTM32L476xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32L476xx-o bridgemaster\led.o --omf_browse bridgemaster\led.crf --depend bridgemaster\led.d)
 I (..\Inc\main.h)(0x65C8230A)
 I (X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h)(0x62FD2EC4)
 I (../Inc/stm32l4xx_hal_conf.h)(0x65BD59E1)
@@ -661,8 +661,8 @@ I (X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL
 I (X:/ELEN121/STM32Cube/Repository/STM32Cube_FW_L4_V1.17.2/Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr_ex.h)(0x62FD2EC7)
 I (C:\Apps\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025F66C)
 I (..\Inc\colors.h)(0x65C80DE9)
-I (..\Inc\led.h)(0x65C81889)
+I (..\Inc\led.h)(0x65D00794)
 I (C:\Apps\Keil_v5\ARM\ARMCC\include\stdio.h)(0x6025F664)
 I (C:\Apps\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x6025F664)
-F (..\Inc\led.h)(0x65C81889)()
+I (C:\Apps\Keil_v5\ARM\ARMCC\include\string.h)(0x6025F66E)
 F (..\Inc\colors.h)(0x65C80DE9)()

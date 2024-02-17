@@ -34,3 +34,4 @@ bridgemaster\led.o: ..\Inc\colors.h
 bridgemaster\led.o: ..\Inc\led.h
 bridgemaster\led.o: C:\Apps\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 bridgemaster\led.o: C:\Apps\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+bridgemaster\led.o: C:\Apps\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

@@ -40,7 +40,7 @@
 
 /* USER CODE BEGIN PV */
 volatile int state = 0;
-
+int stopAnimation = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -91,22 +91,20 @@ int main(void)
 	clearStrip();
 	
 	idle();
-	
-	
-	
-	float data[BRIDGE_BEAMS_NUM] = {10.0, 20.0, 50.0, 5.0, 65.0, 24.0, 100.0};
-	//setFrames(data);
-	//writeFrames();
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		float randdata[BRIDGE_BEAMS_NUM] = {float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0)};
-		setFrames(randdata);
-	  writeFrames();
-		HAL_Delay(100);
+		if(stopAnimation == 0) {
+			float randdata[BRIDGE_BEAMS_NUM] = {float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0)};
+			//float randdata[BRIDGE_BEAMS_NUM] = {float_rand(0.0, 100), float_rand(0.0, 100)};
+			setFrames(randdata);
+			writeFrames();
+			HAL_Delay(125);
+		}
     /* USER CODE END WHILE */
 //		switch(state) {
 //			case 0:

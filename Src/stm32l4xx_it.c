@@ -42,7 +42,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
-
+extern int stopAnimation;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -209,6 +209,7 @@ void EXTI0_IRQHandler(void)
   /* USER CODE END EXTI0_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(CENTER_Pin);
   /* USER CODE BEGIN EXTI0_IRQn 1 */
+	stopAnimation = !stopAnimation;
   clearStrip();
 	seeFrames();
   /* USER CODE END EXTI0_IRQn 1 */
