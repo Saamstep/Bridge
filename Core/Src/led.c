@@ -7,12 +7,6 @@ unsigned int buffer[LED_COUNT];
 /* ****************************************************** */
 /* Beams    Parameter                                     */
 /* ****************************************************** */
-//ledBeam beamBuffer[BRIDGE_BEAMS_NUM] = {
-//{20, 0, false}, {10, 0, true}, {8, 0, false},
-//{5, 0, true}, {8, 0, false}, {10, 0, true},
-//{20, 0, false}, {20, 0, true}, {10, 0, false}
-//};
-
 ledBeam beamBuffer[BRIDGE_BEAMS_NUM] = {
 {11, 0, false},{10, 0, true},
 {9, 0, false},{8, 0, true},

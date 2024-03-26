@@ -7,7 +7,7 @@
 /* LED Strip Parameters                                   */
 /* ****************************************************** */
 #define BRIDGE_BEAMS_NUM 21
-#define LED_COUNT 180
+#define LED_COUNT 160
 
 extern unsigned int buffer[LED_COUNT];
 

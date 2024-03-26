@@ -26,6 +26,8 @@
 
 #include "colors.h"
 #include "led.h"
+#include "wav_player.h"
+#include "arm_math.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -45,7 +47,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
-
+extern float intensity[21];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -230,7 +232,7 @@ void TIM7_IRQHandler(void)
   /* USER CODE BEGIN TIM7_IRQn 0 */
 	float randdata[BRIDGE_BEAMS_NUM] = {float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0),			float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0),
 	float_rand(0.0, 100.0)};
-	//float randdata[BRIDGE_BEAMS_NUM] = {float_rand(0.0, 100), float_rand(0.0, 100)};
+
 	setFrames(randdata);
 	writeFrames();
   /* USER CODE END TIM7_IRQn 0 */

@@ -8,23 +8,24 @@
 #include "wav_player.h"
 #include "audioI2S.h"
 #include "fatfs.h"
-#include "bridge2.h"
+#include "musical_bridge.h"
 #include "ff.h"
+#include "led.h"
 
 
 //WAV File System variables
 static FIL wavFile;
 char** wavListBuff = NULL;
 int num_of_songs = 0;
+int count = 0;
 
 //WAV Audio Buffer
 static uint32_t fileLength;
 #define AUDIO_BUFFER_SIZE  4096*1
-#define MAX_UINT8_VAL 255.0
 static uint8_t audioBuffer[AUDIO_BUFFER_SIZE];
-double *doubleDataBuff;
-double *freq, *intensity;
-
+float32_t *dataBuff;
+float32_t intensity[BRIDGE_BEAMS_NUM] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+int test[BRIDGE_BEAMS_NUM] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 static __IO uint32_t audioRemainSize = 0;
 
 //WAV Player
@@ -65,7 +66,8 @@ void getAllWav() {
         fr = f_findnext(&dj, &fno);               /* Search for next item */
     }
 		
-		wavListBuff = (char**)malloc(num_of_songs*sizeof(char*));
+		//wavListBuff = (char**)malloc(num_of_songs*sizeof(char*));
+		
 		f_closedir(&dj);
 		
 		fr = f_findfirst(&dj, &fno, "", "*.wav"); /* Start to search for files */
@@ -115,15 +117,28 @@ void wavPlayer_play(void)
   f_lseek(&wavFile, 0);
   f_read (&wavFile, &audioBuffer[0], AUDIO_BUFFER_SIZE, &playerReadBytes);
 	size_t numSamples = playerReadBytes;
-	doubleDataBuff = (double *)malloc(numSamples * sizeof(double));
-	freq = (double *)malloc(numSamples * sizeof(double));
-	intensity = (double *)malloc(numSamples * sizeof(double));
-	//if (doubleDataBuff == NULL) exit(1);
+	dataBuff = (float32_t *)malloc(numSamples * sizeof(float32_t));
 	
 	for (size_t i = 0; i < numSamples; i++) {
-		doubleDataBuff[i] = (double)audioBuffer[i] / MAX_UINT8_VAL;
+		dataBuff[i] = (float32_t)audioBuffer[i];
 	}
-	//audioProcess(doubleDataBuff, freq, intensity);
+	
+	uint32_t dsSamples = downsampleAudio(dataBuff, (uint32_t)numSamples);
+	
+	int nbeg = 0;
+	while ((nbeg + DS_SAMPLES_BIN) < (sizeof(dataBuff)) / sizeof(dataBuff[0])) {
+		count++;
+    float32_t *segment = (float32_t *)malloc(dsSamples * sizeof(float32_t));
+    for (int i = nbeg; i < nbeg + DS_SAMPLES_BIN; i++){
+        segment[i] = dataBuff[i];
+    }
+    analyzeAudio(segment, intensity);
+		/*setFrames(intensity);
+		writeFrames();*/
+				
+    nbeg += DATA_ANALYSIS_RATE;
+    }
+	
   audioRemainSize = fileLength - playerReadBytes;
   //Start playing the WAV
   audioI2S_play((uint16_t *)&audioBuffer[0], AUDIO_BUFFER_SIZE);
@@ -185,9 +200,7 @@ void wavPlayer_stop(void)
 {
   audioI2S_stop();
   isFinished = true;
-	free(doubleDataBuff);
-	free(freq);
-	free(intensity);
+	free(dataBuff);
 }
 
 /**

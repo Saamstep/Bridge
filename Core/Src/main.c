@@ -26,6 +26,7 @@
 #include "audioI2S.h"
 #include "MY_CS43L22.h"
 #include "wav_player.h"
+#include "musical_bridge.h"
 
 /* USER CODE END Includes */
 
@@ -54,7 +55,7 @@ DMA_HandleTypeDef hdma_spi3_tx;
 TIM_HandleTypeDef htim7;
 
 /* USER CODE BEGIN PV */
-#define WAV_FILE1 "crab.wav"
+#define WAV_FILE1 "butter.wav"
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -90,6 +91,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
+	//intensityInit();
 	clearStrip();
 	//idle();
   /* USER CODE END Init */
@@ -118,8 +120,8 @@ int main(void)
 	
 	bool isSdCardMounted=0;
   bool pauseResumeToggle=0;
-	
-	
+	clearStrip();
+	seeFrames();
   /* USER CODE END 2 */
 
   /* Infinite loop */
