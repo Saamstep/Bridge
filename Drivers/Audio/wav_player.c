@@ -15,9 +15,10 @@
 
 //WAV File System variables
 static FIL wavFile;
-char** wavListBuff = NULL;
+char** wavListBuff;
 int num_of_songs = 0;
 int count = 0;
+int songIndex = 0;
 
 //WAV Audio Buffer
 static uint32_t fileLength;
@@ -46,41 +47,53 @@ static void wavPlayer_reset(void)
 {
   audioRemainSize = 0;
   playerReadBytes = 0;
+	songIndex++;
+	if(songIndex >= num_of_songs) {
+		songIndex = 0;
+	}
+	free(dataBuff);
 }
 
-/* 
-* @brief Read and fill buff of all WAV files to play.
-* @retval returns void
+/**
+* @brief Return number of WAV files on USB
+* @retval Returns int of number of songs found
 */
-void getAllWav() {
+void getNumOfWavs() 
 {
-    FRESULT fr;     /* Return value */
-    DIR dj;         /* Directory object */
-    FILINFO fno;    /* File information */
-		int i = 0;
-
-    fr = f_findfirst(&dj, &fno, "", "*.wav"); /* Start to search for files */
-
-    while (fr == FR_OK && fno.fname[0]) {         /* Repeat while an item is found */
-				num_of_songs++;
-        fr = f_findnext(&dj, &fno);               /* Search for next item */
-    }
-		
-		//wavListBuff = (char**)malloc(num_of_songs*sizeof(char*));
-		
-		f_closedir(&dj);
-		
-		fr = f_findfirst(&dj, &fno, "", "*.wav"); /* Start to search for files */
-
-    while (fr == FR_OK && fno.fname[0]) {         /* Repeat while an item is found */
-			wavListBuff[i] = (char*)malloc(strlen(fno.fname+1)*sizeof(char));
-			strcpy(wavListBuff[i], fno.fname);
-			i++;
-      fr = f_findnext(&dj, &fno);               /* Search for next item */
-    }
-
-    f_closedir(&dj);
+	FRESULT fr;     /* Return value */
+  DIR dj;         /* Directory object */
+  FILINFO fno;    /* File information */
+  fr = f_findfirst(&dj, &fno, "", "*.wav"); /* Start to search for files */
+	//num_of_songs = 0;
+	
+  while (fr == FR_OK && fno.fname[0]) {         /* Repeat while an item is found */
+		num_of_songs++;
+		fr = f_findnext(&dj, &fno);               /* Search for next item */
+  }
+	
+	f_closedir(&dj);
 }
+
+/** 
+* @brief Read and fill buff of all WAV files to play.
+* @retval Returns void
+*/
+void getAllWav(int len)
+{
+	FRESULT fr;     /* Return value */
+  DIR dj;         /* Directory object */
+  FILINFO fno;    /* File information */
+	fr = f_findfirst(&dj, &fno, "", "*.wav"); /* Start to search for files */
+	int i = 0;
+	wavListBuff = (char**)malloc(len*sizeof(char*));
+
+  while (fr == FR_OK && fno.fname[0]) {         /* Repeat while an item is found */
+		wavListBuff[i] = (char*)malloc(15*sizeof(char));
+		strcpy(wavListBuff[i], (char*)fno.fname);
+		i++;
+		fr = f_findnext(&dj, &fno);               /* Search for next item */
+  }
+    f_closedir(&dj);
 }
 
 /**
@@ -118,10 +131,10 @@ void wavPlayer_play(void)
   f_read (&wavFile, &audioBuffer[0], AUDIO_BUFFER_SIZE, &playerReadBytes);
 	size_t numSamples = playerReadBytes;
 	dataBuff = (float32_t *)malloc(numSamples * sizeof(float32_t));
-	
-	for (size_t i = 0; i < numSamples; i++) {
-		dataBuff[i] = (float32_t)audioBuffer[i];
-	}
+	memcpy(dataBuff, audioBuffer, sizeof(AUDIO_BUFFER_SIZE * sizeof(float32_t)));
+//	for (size_t i = 0; i < numSamples; i++) {
+//		dataBuff[i] = (float32_t)audioBuffer[i];
+//	}
 	
 	uint32_t dsSamples = downsampleAudio(dataBuff, (uint32_t)numSamples);
 	
@@ -200,7 +213,6 @@ void wavPlayer_stop(void)
 {
   audioI2S_stop();
   isFinished = true;
-	free(dataBuff);
 }
 
 /**

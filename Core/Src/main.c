@@ -35,6 +35,8 @@
 extern ApplicationTypeDef Appli_state;
 extern char** wavListBuff;
 extern int num_of_songs;
+extern int songIndex;
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -55,7 +57,7 @@ DMA_HandleTypeDef hdma_spi3_tx;
 TIM_HandleTypeDef htim7;
 
 /* USER CODE BEGIN PV */
-#define WAV_FILE1 "butter.wav"
+static char* staticSongArr[6] = {"smart.wav", "shake.wav", "crab.wav", "butter.wav", "perfect.wav", "fade.wav"};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -91,16 +93,15 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-	//intensityInit();
 	clearStrip();
-	//idle();
+	seeFrames();
   /* USER CODE END Init */
 
   /* Configure the system clock */
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
+	
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -120,8 +121,7 @@ int main(void)
 	
 	bool isSdCardMounted=0;
   bool pauseResumeToggle=0;
-	clearStrip();
-	seeFrames();
+	
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -149,14 +149,15 @@ int main(void)
       {
         f_mount(&USBHFatFS, (const TCHAR*)USBHPath, 0);
         isSdCardMounted = 1;
-				getAllWav();
+				getNumOfWavs();
+				getAllWav(num_of_songs);
       }
       if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0))
       {
         HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_SET);
         HAL_Delay(500);
 				
-        wavPlayer_fileSelect(WAV_FILE1);
+        wavPlayer_fileSelect(staticSongArr[songIndex]);
         wavPlayer_play();
 				HAL_TIM_Base_Start_IT(&htim7);
 

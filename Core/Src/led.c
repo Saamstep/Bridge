@@ -64,11 +64,6 @@ void idle(void) {
 	sendData(buffer);
 }
 
-/*
-60+59 = 119 LEDs
-Beams --> 10 LEDs per bema
-Total LEDs used --> 110 leds
-*/
 void seeFrames() {
 	int counter = 0;
 	int toggle = 0;
@@ -85,8 +80,6 @@ void seeFrames() {
 	sendData(buffer);
 }
 
-//percentage: 0 to 100 ints
-//tells number of leds to turn on
 int getFrameValue(ledBeam beam, float percentage) {
 	float x = (percentage*beam.ledCount)/100;
 	return (int)x;
@@ -105,7 +98,7 @@ int getColor(ledBeam beam) {
 	}
 }
 
-//sets frame to beamBuffer
+
 void setFrames(float data[BRIDGE_BEAMS_NUM]) {
 	for(int i=0; i<BRIDGE_BEAMS_NUM; i++) {
 		beamBuffer[i].ledEnabled = getFrameValue(beamBuffer[i], data[i]);

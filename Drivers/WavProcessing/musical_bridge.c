@@ -1,13 +1,6 @@
 #include "musical_bridge.h"
 #include "led.h"
 
-//void intensityInit() {
-//	*intensity = (float32_t*)malloc(BRIDGE_BEAMS_NUM*sizeof(float32_t));
-//  for(int i=0; i<BRIDGE_BEAMS_NUM; i++) {
-//		(*intensity)[i] = 0.0;
-//	}
-//}
-
 float32_t divideAndMax (float32_t *data, int start, int end) {
 		uint32_t indexValue;
 		float32_t maxValue;

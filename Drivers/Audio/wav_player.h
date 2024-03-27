@@ -46,7 +46,17 @@ typedef struct
 
 }WAV_HeaderTypeDef;
 
-void getAllWav(void);
+/**
+* @brief Return number of WAV files on USB
+* @retval Returns int of number of songs found
+*/
+void getNumOfWavs(void);
+
+/** 
+* @brief Read and fill buff of all WAV files to play.
+* @retval Returns void
+*/
+void getAllWav(int len);
 
 /**
  * @brief Select WAV file to play
