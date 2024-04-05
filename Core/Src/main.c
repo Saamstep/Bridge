@@ -27,6 +27,7 @@
 #include "MY_CS43L22.h"
 #include "wav_player.h"
 #include "musical_bridge.h"
+#include "text_parser.h"
 
 /* USER CODE END Includes */
 
@@ -36,6 +37,7 @@ extern ApplicationTypeDef Appli_state;
 extern char** wavListBuff;
 extern int num_of_songs;
 extern int songIndex;
+
 
 /* USER CODE END PTD */
 
@@ -54,10 +56,12 @@ I2C_HandleTypeDef hi2c1;
 I2S_HandleTypeDef hi2s3;
 DMA_HandleTypeDef hdma_spi3_tx;
 
+TIM_HandleTypeDef htim6;
 TIM_HandleTypeDef htim7;
 
 /* USER CODE BEGIN PV */
 static char* staticSongArr[6] = {"smart.wav", "shake.wav", "crab.wav", "butter.wav", "perfect.wav", "fade.wav"};
+char* staticTextArr[6] = {"smart.txt", "shake.txt", "crab.txt", "butter.txt", "perfect.txt", "fade.txt"};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -67,6 +71,7 @@ static void MX_DMA_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_I2S3_Init(void);
 static void MX_TIM7_Init(void);
+static void MX_TIM6_Init(void);
 void MX_USB_HOST_Process(void);
 
 /* USER CODE BEGIN PFP */
@@ -112,6 +117,7 @@ int main(void)
   MX_FATFS_Init();
   MX_USB_HOST_Init();
   MX_TIM7_Init();
+  MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
   CS43_Init(hi2c1, MODE_I2S);
   CS43_SetVolume(230);//0-255
@@ -149,6 +155,8 @@ int main(void)
       {
         f_mount(&USBHFatFS, (const TCHAR*)USBHPath, 0);
         isSdCardMounted = 1;
+				openTextFile(staticTextArr[songIndex]);
+				parseTextFile(staticTextArr[songIndex]);
 				getNumOfWavs();
 				getAllWav(num_of_songs);
       }
@@ -158,12 +166,15 @@ int main(void)
         HAL_Delay(500);
 				
         wavPlayer_fileSelect(staticSongArr[songIndex]);
+				
         wavPlayer_play();
 				HAL_TIM_Base_Start_IT(&htim7);
 
         while(!wavPlayer_isFinished())
         {
           wavPlayer_process();
+					// read audio buffer
+					// process
           if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0))
           {
             pauseResumeToggle^=1;
@@ -310,6 +321,44 @@ static void MX_I2S3_Init(void)
   /* USER CODE BEGIN I2S3_Init 2 */
 
   /* USER CODE END I2S3_Init 2 */
+
+}
+
+/**
+  * @brief TIM6 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM6_Init(void)
+{
+
+  /* USER CODE BEGIN TIM6_Init 0 */
+
+  /* USER CODE END TIM6_Init 0 */
+
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM6_Init 1 */
+
+  /* USER CODE END TIM6_Init 1 */
+  htim6.Instance = TIM6;
+  htim6.Init.Prescaler = 159;
+  htim6.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim6.Init.Period = 65535;
+  htim6.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim6) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim6, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM6_Init 2 */
+
+  /* USER CODE END TIM6_Init 2 */
 
 }
 

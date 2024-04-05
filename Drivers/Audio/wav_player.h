@@ -11,6 +11,11 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include "audioI2S.h"
+#include "fatfs.h"
+#include "musical_bridge.h"
+#include "ff.h"
+#include "led.h"
 
 //Audio buffer state
 typedef enum
@@ -89,5 +94,6 @@ bool wavPlayer_isFinished(void);
  */
 void wavPlayer_pause(void);
 void wavPlayer_resume(void);
+void processAudio(float32_t *data, size_t numSamples);
 
 #endif /* WAV_PLAYER_H_ */

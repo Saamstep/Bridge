@@ -19,12 +19,14 @@ char** wavListBuff;
 int num_of_songs = 0;
 int count = 0;
 int songIndex = 0;
+int testCase;
+size_t numSamples;
 
 //WAV Audio Buffer
 static uint32_t fileLength;
-#define AUDIO_BUFFER_SIZE  4096*1
+#define AUDIO_BUFFER_SIZE  4096
 static uint8_t audioBuffer[AUDIO_BUFFER_SIZE];
-float32_t *dataBuff;
+float32_t dataBuff[AUDIO_BUFFER_SIZE];
 float32_t intensity[BRIDGE_BEAMS_NUM] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 int test[BRIDGE_BEAMS_NUM] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 static __IO uint32_t audioRemainSize = 0;
@@ -51,7 +53,7 @@ static void wavPlayer_reset(void)
 	if(songIndex >= num_of_songs) {
 		songIndex = 0;
 	}
-	free(dataBuff);
+	//free(dataBuff);
 }
 
 /**
@@ -129,29 +131,9 @@ void wavPlayer_play(void)
   //Read Audio data from USB Disk
   f_lseek(&wavFile, 0);
   f_read (&wavFile, &audioBuffer[0], AUDIO_BUFFER_SIZE, &playerReadBytes);
-	size_t numSamples = playerReadBytes;
-	dataBuff = (float32_t *)malloc(numSamples * sizeof(float32_t));
-	memcpy(dataBuff, audioBuffer, sizeof(AUDIO_BUFFER_SIZE * sizeof(float32_t)));
-//	for (size_t i = 0; i < numSamples; i++) {
-//		dataBuff[i] = (float32_t)audioBuffer[i];
-//	}
-	
-	uint32_t dsSamples = downsampleAudio(dataBuff, (uint32_t)numSamples);
-	
-	int nbeg = 0;
-	while ((nbeg + DS_SAMPLES_BIN) < (sizeof(dataBuff)) / sizeof(dataBuff[0])) {
-		count++;
-    float32_t *segment = (float32_t *)malloc(dsSamples * sizeof(float32_t));
-    for (int i = nbeg; i < nbeg + DS_SAMPLES_BIN; i++){
-        segment[i] = dataBuff[i];
-    }
-    analyzeAudio(segment, intensity);
-		/*setFrames(intensity);
-		writeFrames();*/
-				
-    nbeg += DATA_ANALYSIS_RATE;
-    }
-	
+	//dataBuff = (float32_t *)malloc(numSamples * sizeof(float32_t));
+	//memcpy(dataBuff, audioBuffer, sizeof(AUDIO_BUFFER_SIZE * sizeof(float32_t)));
+
   audioRemainSize = fileLength - playerReadBytes;
   //Start playing the WAV
   audioI2S_play((uint16_t *)&audioBuffer[0], AUDIO_BUFFER_SIZE);
@@ -171,6 +153,9 @@ void wavPlayer_process(void)
     playerReadBytes = 0;
     playerControlSM = PLAYER_CONTROL_Idle;
     f_read (&wavFile, &audioBuffer[0], AUDIO_BUFFER_SIZE/2, &playerReadBytes);
+		numSamples = playerReadBytes;
+		memcpy(dataBuff, audioBuffer, sizeof((AUDIO_BUFFER_SIZE/2) * sizeof(float32_t)));
+
     if(audioRemainSize > (AUDIO_BUFFER_SIZE / 2))
     {
       audioRemainSize -= playerReadBytes;
@@ -186,6 +171,8 @@ void wavPlayer_process(void)
     playerReadBytes = 0;
     playerControlSM = PLAYER_CONTROL_Idle;
     f_read (&wavFile, &audioBuffer[AUDIO_BUFFER_SIZE/2], AUDIO_BUFFER_SIZE/2, &playerReadBytes);
+		numSamples = playerReadBytes;
+		memcpy(dataBuff, audioBuffer, sizeof((AUDIO_BUFFER_SIZE/2) * sizeof(float32_t)));
     if(audioRemainSize > (AUDIO_BUFFER_SIZE / 2))
     {
       audioRemainSize -= playerReadBytes;
@@ -204,6 +191,23 @@ void wavPlayer_process(void)
     playerControlSM = PLAYER_CONTROL_Idle;
     break;
   }
+}
+
+void processAudio (float32_t *data, size_t numSamples) {
+		uint32_t dsSamples = downsampleAudio(dataBuff, (uint32_t)numSamples);
+	
+		int nbeg = 0;
+		while ((nbeg + DS_SAMPLES_BIN) < (sizeof(dataBuff)) / sizeof(dataBuff[0])) {
+			float32_t *segment = (float32_t *)malloc(dsSamples * sizeof(float32_t));
+			for (int i = nbeg; i < nbeg + DS_SAMPLES_BIN; i++){
+					segment[i] = dataBuff[i];
+			}
+			analyzeAudio(segment, intensity);
+			/*setFrames(intensity);
+			writeFrames();*/
+				
+			nbeg += DATA_ANALYSIS_RATE;
+    }
 }
 
 /**

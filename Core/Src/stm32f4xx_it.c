@@ -28,6 +28,8 @@
 #include "led.h"
 #include "wav_player.h"
 #include "arm_math.h"
+#include "wav_player.h"
+#include "text_parser.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -37,7 +39,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define AUDIO_BUFFER_SIZE  4096
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -48,6 +50,12 @@
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
 extern float intensity[21];
+extern float32_t dataBuff[AUDIO_BUFFER_SIZE];
+extern size_t numSamples;
+extern float ledValues[21];
+extern char* staticTextArr[6];
+extern int songIndex;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -67,6 +75,7 @@ float float_rand( float min, float max )
 /* External variables --------------------------------------------------------*/
 extern HCD_HandleTypeDef hhcd_USB_OTG_FS;
 extern DMA_HandleTypeDef hdma_spi3_tx;
+extern TIM_HandleTypeDef htim6;
 extern TIM_HandleTypeDef htim7;
 /* USER CODE BEGIN EV */
 
@@ -225,6 +234,20 @@ void DMA1_Stream5_IRQHandler(void)
 }
 
 /**
+  * @brief This function handles TIM6 global interrupt, DAC1 and DAC2 underrun error interrupts.
+  */
+void TIM6_DAC_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM6_DAC_IRQn 0 */
+	
+  /* USER CODE END TIM6_DAC_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim6);
+  /* USER CODE BEGIN TIM6_DAC_IRQn 1 */
+
+  /* USER CODE END TIM6_DAC_IRQn 1 */
+}
+
+/**
   * @brief This function handles TIM7 global interrupt.
   */
 void TIM7_IRQHandler(void)
@@ -232,9 +255,9 @@ void TIM7_IRQHandler(void)
   /* USER CODE BEGIN TIM7_IRQn 0 */
 	float randdata[BRIDGE_BEAMS_NUM] = {float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0),			float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0),
 	float_rand(0.0, 100.0)};
-
-	setFrames(randdata);
+	setFrames(ledValues);
 	writeFrames();
+	parseTextFile(staticTextArr[songIndex]);
   /* USER CODE END TIM7_IRQn 0 */
   HAL_TIM_IRQHandler(&htim7);
   /* USER CODE BEGIN TIM7_IRQn 1 */
