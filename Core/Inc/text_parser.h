@@ -1,3 +1,3 @@
 void openTextFile(char *filename);
-void parseTextFile(char* filename);
-void fillValuesArr(char line[70]);
+void fillValuesArr(char *line);
+void parseTextFile(char *filename);

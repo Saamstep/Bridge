@@ -23,13 +23,14 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdlib.h>
-
+#include <stdbool.h>
 #include "colors.h"
 #include "led.h"
 #include "wav_player.h"
 #include "arm_math.h"
 #include "wav_player.h"
 #include "text_parser.h"
+#include "fatfs.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -49,13 +50,10 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
-extern float intensity[21];
-extern float32_t dataBuff[AUDIO_BUFFER_SIZE];
-extern size_t numSamples;
-extern float ledValues[21];
-extern char* staticTextArr[6];
-extern int songIndex;
-
+bool lock1 = false;
+bool lock2 = false;
+int count = 0;
+bool valuesPlayed = true;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -78,7 +76,13 @@ extern DMA_HandleTypeDef hdma_spi3_tx;
 extern TIM_HandleTypeDef htim6;
 extern TIM_HandleTypeDef htim7;
 /* USER CODE BEGIN EV */
-
+extern float ledValues[21];
+extern char* staticTextArr[6];
+extern int songIndex;
+extern FIL fp;
+extern char tmpBuff[2][16000];
+extern bool buffer_full[2];
+extern int buffNum;
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -255,9 +259,33 @@ void TIM7_IRQHandler(void)
   /* USER CODE BEGIN TIM7_IRQn 0 */
 	float randdata[BRIDGE_BEAMS_NUM] = {float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0),			float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0),
 	float_rand(0.0, 100.0)};
-	setFrames(ledValues);
+	//parseTextFile(staticTextArr[songIndex]);
+	setFrames(randdata);
 	writeFrames();
-	parseTextFile(staticTextArr[songIndex]);
+//	if(!lock1 && buffer_full[buffNum]) {
+//		count++;
+//		//parseTextFile(staticTextArr[songIndex]);
+//		fillValuesArr(tmpBuff[buffNum]);
+//		setFrames(ledValues);
+//		writeFrames();
+//		buffer_full[buffNum] = false;
+//		buffNum = (buffNum+1) % 2;
+//		lock1 = true;
+//		lock2 = true;
+//	}
+//	
+//	if(lock2 && buffer_full[buffNum]) {
+//		//parseTextFile(staticTextArr[songIndex]);
+//		fillValuesArr(tmpBuff[buffNum]);
+//		setFrames(ledValues);
+//		writeFrames();
+//		
+//		buffer_full[buffNum] = false;
+//		buffNum = (buffNum+1) % 2;
+//		lock2 = false;
+//		lock1 = false;
+//	}
+	
   /* USER CODE END TIM7_IRQn 0 */
   HAL_TIM_IRQHandler(&htim7);
   /* USER CODE BEGIN TIM7_IRQn 1 */

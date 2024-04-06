@@ -17,7 +17,6 @@
 static FIL wavFile;
 char** wavListBuff;
 int num_of_songs = 0;
-int count = 0;
 int songIndex = 0;
 int testCase;
 size_t numSamples;
@@ -53,7 +52,6 @@ static void wavPlayer_reset(void)
 	if(songIndex >= num_of_songs) {
 		songIndex = 0;
 	}
-	//free(dataBuff);
 }
 
 /**
@@ -202,7 +200,7 @@ void processAudio (float32_t *data, size_t numSamples) {
 			for (int i = nbeg; i < nbeg + DS_SAMPLES_BIN; i++){
 					segment[i] = dataBuff[i];
 			}
-			analyzeAudio(segment, intensity);
+			//analyzeAudio(segment, intensity);
 			/*setFrames(intensity);
 			writeFrames();*/
 				

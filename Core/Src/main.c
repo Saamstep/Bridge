@@ -37,8 +37,8 @@ extern ApplicationTypeDef Appli_state;
 extern char** wavListBuff;
 extern int num_of_songs;
 extern int songIndex;
-
-
+extern FIL fp;
+extern char tmpBuffOne[120];
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -155,8 +155,6 @@ int main(void)
       {
         f_mount(&USBHFatFS, (const TCHAR*)USBHPath, 0);
         isSdCardMounted = 1;
-				openTextFile(staticTextArr[songIndex]);
-				parseTextFile(staticTextArr[songIndex]);
 				getNumOfWavs();
 				getAllWav(num_of_songs);
       }
@@ -165,14 +163,17 @@ int main(void)
         HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_SET);
         HAL_Delay(500);
 				
-        wavPlayer_fileSelect(staticSongArr[songIndex]);
-				
+				openTextFile(staticTextArr[songIndex]);
+        //parseTextFile(staticTextArr[songIndex]);
+				wavPlayer_fileSelect(staticSongArr[songIndex]);
         wavPlayer_play();
+				
 				HAL_TIM_Base_Start_IT(&htim7);
 
         while(!wavPlayer_isFinished())
         {
           wavPlayer_process();
+					parseTextFile(staticTextArr[songIndex]);
 					// read audio buffer
 					// process
           if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0))
@@ -205,6 +206,10 @@ int main(void)
         }
         HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET);
         HAL_Delay(1000);
+//				songIndex++;
+//				if(songIndex >= num_of_songs) songIndex = 0;
+//				wavPlayer_fileSelect(staticSongArr[songIndex]);
+//        wavPlayer_play();
       }
     }
   }
