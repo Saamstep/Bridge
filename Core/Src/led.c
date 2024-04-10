@@ -83,15 +83,15 @@ void seeFrames() {
 
 int getFrameValue(ledBeam beam, float db) {
 	int subdivisions = round(beam.ledCount/4);
-	if(db >= 85.0) {
+	if(db >= 70.0) {
 		return beam.ledCount;
-	} else if(db <= 0) {
+	} else if(db < 0) {
 		return 0;
-	} else if(db > 0 && db <= 20.0) {
+	} else if(db >= 0 && db <= 20.0) {
 		return subdivisions;
-	} else if(db > 20.0 && db <= 60.0) {
+	} else if(db > 20.0 && db <= 45.0) {
 		return subdivisions*2;
-	} else if(db > 60 && db < 85) {
+	} else if(db > 45.0 && db < 70.0) {
 		return subdivisions*3;
 	}
 }

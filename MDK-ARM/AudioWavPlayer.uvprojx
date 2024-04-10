@@ -401,6 +401,11 @@
               <FilePath>..\Core\Src\led.c</FilePath>
             </File>
             <File>
+              <FileName>text_parser.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\text_parser.c</FilePath>
+            </File>
+            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/main.c</FilePath>
@@ -414,11 +419,6 @@
               <FileName>stm32f4xx_hal_msp.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/stm32f4xx_hal_msp.c</FilePath>
-            </File>
-            <File>
-              <FileName>text_parser.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\text_parser.c</FilePath>
             </File>
           </Files>
         </Group>

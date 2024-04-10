@@ -27,9 +27,12 @@ typedef enum
 
 typedef enum
 {
-  PLAY_Idle=0,
+	PLAY_Init=0,
+  PLAY_Ready,
+	PLAY_Playing,
   PLAY_Pause,
   PLAY_Resume,
+	PLAY_Next,
 }PLAY_State_e;
 
 typedef struct

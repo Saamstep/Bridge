@@ -48,10 +48,6 @@ static void wavPlayer_reset(void)
 {
   audioRemainSize = 0;
   playerReadBytes = 0;
-	songIndex++;
-	if(songIndex >= num_of_songs) {
-		songIndex = 0;
-	}
 }
 
 /**
@@ -129,8 +125,6 @@ void wavPlayer_play(void)
   //Read Audio data from USB Disk
   f_lseek(&wavFile, 0);
   f_read (&wavFile, &audioBuffer[0], AUDIO_BUFFER_SIZE, &playerReadBytes);
-	//dataBuff = (float32_t *)malloc(numSamples * sizeof(float32_t));
-	//memcpy(dataBuff, audioBuffer, sizeof(AUDIO_BUFFER_SIZE * sizeof(float32_t)));
 
   audioRemainSize = fileLength - playerReadBytes;
   //Start playing the WAV

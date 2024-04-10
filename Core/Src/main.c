@@ -60,8 +60,8 @@ TIM_HandleTypeDef htim6;
 TIM_HandleTypeDef htim7;
 
 /* USER CODE BEGIN PV */
-static char* staticSongArr[6] = {"crab.wav", "smart.wav", "perfect.wav", "butter.wav", "shake.wav", "fade.wav"};
-char* staticTextArr[6] = {"crab.txt", "smart.txt", "perfect.txt", "butter.txt", "shake.txt", "fade.txt"};
+static char* staticSongArr[6] = {"butter.wav", "test.wav", "perfect.wav", "butter.wav", "smart.wav", "fade.wav"};
+char* staticTextArr[6] = {"butter.txt", "test.txt", "perfect.txt", "butter.txt", "smart.txt", "fade.txt"};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -88,6 +88,7 @@ void MX_USB_HOST_Process(void);
   */
 int main(void)
 {
+
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -127,6 +128,8 @@ int main(void)
 	bool isSdCardMounted=0;
   bool pauseResumeToggle=0;
 	
+	PLAY_State_e playerState = PLAY_Init;
+	
 	clearStrip();
 	seeFrames();
 	
@@ -149,6 +152,9 @@ int main(void)
       HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_RESET);
       f_mount(NULL, (TCHAR const*)"", 0);
       isSdCardMounted = 0;
+			playerState = PLAY_Init;
+			clearStrip();
+			seeFrames();
     }
 
     if(Appli_state == APPLICATION_READY)
@@ -159,58 +165,75 @@ int main(void)
         isSdCardMounted = 1;
 				getNumOfWavs();
 				getAllWav(num_of_songs);
+				playerState = PLAY_Ready;
       }
-      if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0))
+      if(playerState == PLAY_Ready)
       {
         HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_SET);
         HAL_Delay(500);
 				
 				openTextFile(staticTextArr[songIndex]);
 				wavPlayer_fileSelect(staticSongArr[songIndex]);
-        wavPlayer_play();
 				
+        wavPlayer_play();
+				clearStrip();
 				HAL_TIM_Base_Start_IT(&htim7);
+				
+				playerState = PLAY_Playing;
+				
         while(!wavPlayer_isFinished())
         {
           wavPlayer_process();
 					parseTextFile(staticTextArr[songIndex]);
-					// read audio buffer
-					// process
+
           if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0))
           {
             pauseResumeToggle^=1;
             if(pauseResumeToggle)
             {
+							//PAUSE
               HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_SET);
               wavPlayer_pause();
 							HAL_TIM_Base_Stop_IT(&htim7);
 							clearStrip();
+							seeFrames();
+							playerState = PLAY_Pause;
               HAL_Delay(200);
             }
             else
             {
+							//RESUME
               HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
+							clearStrip();
               HAL_Delay(1000);
-              if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0))
-              {
-								clearStrip();
-								HAL_TIM_Base_Stop_IT(&htim7);
-                wavPlayer_stop();
-              }
-              {
-                wavPlayer_resume();
-								HAL_TIM_Base_Start_IT(&htim7);
-              }
+//              if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0))
+//              {
+//								clearStrip();
+//								HAL_TIM_Base_Stop_IT(&htim7);
+//                wavPlayer_stop();
+//								playerState = PLAY_Pause;
+//              }
+//              {
+              wavPlayer_resume();
+							HAL_TIM_Base_Start_IT(&htim7);
+							playerState = PLAY_Playing;
+//             }
             }
           }
         }
+				clearStrip();
+				seeFrames();
+				wavPlayer_stop();
         HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET);
         HAL_Delay(1000);
-//				songIndex++;
-//				if(songIndex >= num_of_songs) songIndex = 0;
-//				wavPlayer_fileSelect(staticSongArr[songIndex]);
-//        wavPlayer_play();
+				playerState = PLAY_Next;
       }
+			if(playerState == PLAY_Next) {
+				clearStrip();
+				songIndex++;
+				if(songIndex >= num_of_songs) songIndex = 0;
+				playerState = PLAY_Ready;
+			}
     }
   }
   /* USER CODE END 3 */
@@ -385,7 +408,7 @@ static void MX_TIM7_Init(void)
 
   /* USER CODE END TIM7_Init 1 */
   htim7.Instance = TIM7;
-  htim7.Init.Prescaler = 159;
+  htim7.Init.Prescaler = 79;
   htim7.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim7.Init.Period = 65535;
   htim7.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
@@ -429,6 +452,8 @@ static void MX_DMA_Init(void)
 static void MX_GPIO_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
+/* USER CODE BEGIN MX_GPIO_Init_1 */
+/* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOH_CLK_ENABLE();
@@ -477,6 +502,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
+/* USER CODE BEGIN MX_GPIO_Init_2 */
+/* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
