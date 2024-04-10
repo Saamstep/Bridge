@@ -30,8 +30,9 @@ void sendData(unsigned int *ledArray);
 void clearStrip(void);
 void idle(void);
 void seeFrames(void);
-int getFrameValue(ledBeam beam, float percentage);
+int getFrameValue(ledBeam beam, float db);
 int getColor(ledBeam beam);
+int getColorMulti(ledBeam beam, int ledNum);
 void setFrames(float data[BRIDGE_BEAMS_NUM]);
 void writeFrames(void);
 

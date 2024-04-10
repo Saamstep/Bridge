@@ -204,7 +204,7 @@ void processAudio (float32_t *data, size_t numSamples) {
 			/*setFrames(intensity);
 			writeFrames();*/
 				
-			nbeg += DATA_ANALYSIS_RATE;
+			nbeg += DS_SAMPLES_BIN;
     }
 }
 

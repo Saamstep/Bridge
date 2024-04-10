@@ -1,6 +1,7 @@
 #include "main.h"
 #include <stdbool.h>
 #include <string.h>
+#include <math.h>
 
 unsigned int buffer[LED_COUNT];
 
@@ -80,9 +81,19 @@ void seeFrames() {
 	sendData(buffer);
 }
 
-int getFrameValue(ledBeam beam, float percentage) {
-	float x = (percentage*beam.ledCount)/100;
-	return (int)x;
+int getFrameValue(ledBeam beam, float db) {
+	int subdivisions = round(beam.ledCount/4);
+	if(db >= 85.0) {
+		return beam.ledCount;
+	} else if(db <= 0) {
+		return 0;
+	} else if(db > 0 && db <= 20.0) {
+		return subdivisions;
+	} else if(db > 20.0 && db <= 60.0) {
+		return subdivisions*2;
+	} else if(db > 60 && db < 85) {
+		return subdivisions*3;
+	}
 }
 
 int getColor(ledBeam beam) {
@@ -98,6 +109,22 @@ int getColor(ledBeam beam) {
 	}
 }
 
+int getColorMulti(ledBeam beam, int ledNum){ 
+	int subdivisions = round((((double)beam.ledCount/4.0)));
+		if(ledNum == beam.ledCount) {
+			return RED;
+		}
+		if(ledNum > 0 && ledNum <= subdivisions) {
+			return GREEN;
+		} else if(ledNum > subdivisions && ledNum <= subdivisions*2) {
+			return YELLOW;
+		} else if(ledNum > subdivisions*2 && ledNum <= subdivisions*3) {
+			return ORANGE;
+		} else if(ledNum >= subdivisions*3) {
+			return RED;
+		}
+	return LED_COLOR_RESET;
+}
 
 void setFrames(float data[BRIDGE_BEAMS_NUM]) {
 	for(int i=0; i<BRIDGE_BEAMS_NUM; i++) {
@@ -111,17 +138,23 @@ void writeFrames() {
 	for(int i=0; i<BRIDGE_BEAMS_NUM; i++) {
 		if(!beamBuffer[i].reverse) {
 			//===IF LED strip is NOT reversed===
-			for(int k=0; k<beamBuffer[i].ledEnabled; k++) {
-				buffer[counter] = getColor(beamBuffer[i]);
+			for(int k=1; k<=beamBuffer[i].ledEnabled; k++) {
+				//buffer[counter] = getColor(beamBuffer[i]);
+				buffer[counter] = getColorMulti(beamBuffer[i], k);
 				counter++;
-			}
+		}
 		counter += beamBuffer[i].ledCount-beamBuffer[i].ledEnabled;
 		} else {
 			//===IF LED strip IS reversed===
-			int min = beamBuffer[i].ledEnabled;
-			int COLOR = getColor(beamBuffer[i]);
-			for(int k=0; k<beamBuffer[i].ledCount; k++) {
-				buffer[counter] = k >= min ? COLOR : LED_COLOR_RESET;
+			//int COLOR = getColor(beamBuffer[i]);
+			for(int k=0; k<beamBuffer[i].ledCount-beamBuffer[i].ledEnabled; k++) {
+				buffer[counter] = LED_COLOR_RESET;
+				counter++;
+			}
+			int ledIndex = beamBuffer[i].ledCount-(beamBuffer[i].ledCount-beamBuffer[i].ledEnabled);
+			for(int k=1; k<=beamBuffer[i].ledEnabled; k++) {
+				buffer[counter] = getColorMulti(beamBuffer[i], ledIndex);
+				ledIndex--;
 				counter++;
 			}
 		}

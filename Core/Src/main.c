@@ -60,8 +60,8 @@ TIM_HandleTypeDef htim6;
 TIM_HandleTypeDef htim7;
 
 /* USER CODE BEGIN PV */
-static char* staticSongArr[6] = {"smart.wav", "shake.wav", "crab.wav", "butter.wav", "perfect.wav", "fade.wav"};
-char* staticTextArr[6] = {"smart.txt", "shake.txt", "crab.txt", "butter.txt", "perfect.txt", "fade.txt"};
+static char* staticSongArr[6] = {"crab.wav", "smart.wav", "perfect.wav", "butter.wav", "shake.wav", "fade.wav"};
+char* staticTextArr[6] = {"crab.txt", "smart.txt", "perfect.txt", "butter.txt", "shake.txt", "fade.txt"};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -98,8 +98,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-	clearStrip();
-	seeFrames();
+	
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -127,6 +126,9 @@ int main(void)
 	
 	bool isSdCardMounted=0;
   bool pauseResumeToggle=0;
+	
+	clearStrip();
+	seeFrames();
 	
   /* USER CODE END 2 */
 
@@ -164,12 +166,10 @@ int main(void)
         HAL_Delay(500);
 				
 				openTextFile(staticTextArr[songIndex]);
-        //parseTextFile(staticTextArr[songIndex]);
 				wavPlayer_fileSelect(staticSongArr[songIndex]);
         wavPlayer_play();
 				
 				HAL_TIM_Base_Start_IT(&htim7);
-
         while(!wavPlayer_isFinished())
         {
           wavPlayer_process();

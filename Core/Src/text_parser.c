@@ -3,13 +3,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "fatfs.h"
+#include <math.h>
 
 FIL fp;
+UINT br;
 
 float ledValues[21] = {100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0};
-char tmpBuff[2][16000];
-int buffNum = 0;
-bool buffer_full[2] = {false};
+char tmpBuff[64000];
+bool flag;
+//int buffNum = 0;
+//bool buffer_full[2] = {false};
+int counting;
 
 extern bool valuesPlayed;
 
@@ -18,8 +22,15 @@ void openTextFile(char *filename) {
 }
 
 void parseTextFile(char* filename) {
-		f_gets((TCHAR*)tmpBuff[buffNum], sizeof(tmpBuff[buffNum]), &fp);
-		buffer_full[buffNum] = true;
+		if(flag) {
+				f_gets((TCHAR*)tmpBuff, sizeof(tmpBuff), &fp);
+				fillValuesArr(tmpBuff);
+				//buffer_full[buffNum] = true;
+				//buffNum = (buffNum+1) % 2;
+				counting++;
+				flag = false;
+		}
+		//f_read(&fp, tmpBuff[buffNum], sizeof(tmpBuff[buffNum]), &br); 
 }
 
 void fillValuesArr(char* line) {
@@ -27,7 +38,7 @@ void fillValuesArr(char* line) {
 	int i = 0;
 	
 	while(token != NULL && i < 21) {
-		ledValues[i] = (float)atof(token);
+		ledValues[i] = 20*log((float)atof(token));
 		token = strtok(NULL, ",");
 		i++;
 	}

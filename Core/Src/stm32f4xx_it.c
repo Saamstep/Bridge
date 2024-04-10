@@ -76,13 +76,12 @@ extern DMA_HandleTypeDef hdma_spi3_tx;
 extern TIM_HandleTypeDef htim6;
 extern TIM_HandleTypeDef htim7;
 /* USER CODE BEGIN EV */
-extern float ledValues[21];
+extern float ledValues[BRIDGE_BEAMS_NUM];
 extern char* staticTextArr[6];
 extern int songIndex;
-extern FIL fp;
-extern char tmpBuff[2][16000];
-extern bool buffer_full[2];
-extern int buffNum;
+extern bool flag;
+//extern bool buffer_full[2];
+//extern int buffNum;
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -257,11 +256,26 @@ void TIM6_DAC_IRQHandler(void)
 void TIM7_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM7_IRQn 0 */
-	float randdata[BRIDGE_BEAMS_NUM] = {float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0),			float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0),
-	float_rand(0.0, 100.0)};
+	//float randdata[BRIDGE_BEAMS_NUM] = {float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0),			float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0), float_rand(0.0, 100.0),
+	//float_rand(0.0, 100.0)};
 	//parseTextFile(staticTextArr[songIndex]);
-	setFrames(randdata);
-	writeFrames();
+	//setFrames(randdata);
+	//writeFrames();
+	//float testdata[BRIDGE_BEAMS_NUM] = {100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0};
+	if(!flag) {
+		setFrames(ledValues);
+		writeFrames();
+		flag = true;
+	}
+//	char tmpBuff2[64000];
+//	for (int i = 0; i < sizeof(tmpBuff); i++){
+//			while(tmpBuff[i] != '\n'){
+//				 tmpBuff2[i] = tmpBuff[i];
+//			}
+//			fillValuesArr(tmpBuff2);
+//			setFrames(ledValues);
+//			writeFrames();
+//	}
 //	if(!lock1 && buffer_full[buffNum]) {
 //		count++;
 //		//parseTextFile(staticTextArr[songIndex]);
