@@ -11,7 +11,8 @@
 #include "musical_bridge.h"
 #include "ff.h"
 #include "led.h"
-
+#include <stdio.h>
+#include <stdlib.h>
 
 //WAV File System variables
 static FIL wavFile;
@@ -98,6 +99,7 @@ void getAllWav(int len)
  */
 bool wavPlayer_fileSelect(const char* filePath)
 {
+	//wavFile = NULL;
   WAV_HeaderTypeDef wavHeader;
   UINT readBytes = 0;
   //Open WAV file
@@ -194,10 +196,6 @@ void processAudio (float32_t *data, size_t numSamples) {
 			for (int i = nbeg; i < nbeg + DS_SAMPLES_BIN; i++){
 					segment[i] = dataBuff[i];
 			}
-			//analyzeAudio(segment, intensity);
-			/*setFrames(intensity);
-			writeFrames();*/
-				
 			nbeg += DS_SAMPLES_BIN;
     }
 }
@@ -241,6 +239,6 @@ void audioI2S_halfTransfer_Callback(void)
 void audioI2S_fullTransfer_Callback(void)
 {
   playerControlSM = PLAYER_CONTROL_FullBuffer;
-//  audioI2S_changeBuffer((uint16_t*)&audioBuffer[0], AUDIO_BUFFER_SIZE / 2);
+  //audioI2S_changeBuffer((uint16_t*)&audioBuffer[0], AUDIO_BUFFER_SIZE / 2);
 }
 

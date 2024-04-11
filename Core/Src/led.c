@@ -94,6 +94,7 @@ int getFrameValue(ledBeam beam, float db) {
 	} else if(db > 45.0 && db < 70.0) {
 		return subdivisions*3;
 	}
+	return 0;
 }
 
 int getColor(ledBeam beam) {

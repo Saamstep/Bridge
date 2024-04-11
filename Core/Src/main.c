@@ -60,8 +60,9 @@ TIM_HandleTypeDef htim6;
 TIM_HandleTypeDef htim7;
 
 /* USER CODE BEGIN PV */
-static char* staticSongArr[6] = {"butter.wav", "test.wav", "perfect.wav", "butter.wav", "smart.wav", "fade.wav"};
-char* staticTextArr[6] = {"butter.txt", "test.txt", "perfect.txt", "butter.txt", "smart.txt", "fade.txt"};
+static char* staticSongArr[6] = {"smart.wav", "water.wav", "perfect.wav", "butter.wav", "smart.wav", "fade.wav"};
+char* staticTextArr[6] = {"smart.txt", "water.txt", "perfect.txt", "butter.txt", "smart.txt", "fade.txt"};
+PLAY_State_e playerState = PLAY_Init;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -122,13 +123,10 @@ int main(void)
   CS43_Init(hi2c1, MODE_I2S);
   CS43_SetVolume(230);//0-255
   CS43_Enable_RightLeft(CS43_RIGHT_LEFT);
-
   audioI2S_setHandle(&hi2s3);
 	
 	bool isSdCardMounted=0;
   bool pauseResumeToggle=0;
-	
-	PLAY_State_e playerState = PLAY_Init;
 	
 	clearStrip();
 	seeFrames();
@@ -159,7 +157,7 @@ int main(void)
 
     if(Appli_state == APPLICATION_READY)
     {
-      if(!isSdCardMounted)
+      if(true)
       {
         f_mount(&USBHFatFS, (const TCHAR*)USBHPath, 0);
         isSdCardMounted = 1;
@@ -173,11 +171,14 @@ int main(void)
         HAL_Delay(500);
 				
 				openTextFile(staticTextArr[songIndex]);
-				wavPlayer_fileSelect(staticSongArr[songIndex]);
+
+				if(wavPlayer_fileSelect(staticSongArr[songIndex]) == false) {
+					clearStrip();
+					while(1) {}
+				}
 				
-        wavPlayer_play();
-				clearStrip();
 				HAL_TIM_Base_Start_IT(&htim7);
+        wavPlayer_play();
 				
 				playerState = PLAY_Playing;
 				
@@ -206,33 +207,26 @@ int main(void)
               HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
 							clearStrip();
               HAL_Delay(1000);
-//              if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0))
-//              {
-//								clearStrip();
-//								HAL_TIM_Base_Stop_IT(&htim7);
-//                wavPlayer_stop();
-//								playerState = PLAY_Pause;
-//              }
-//              {
               wavPlayer_resume();
 							HAL_TIM_Base_Start_IT(&htim7);
 							playerState = PLAY_Playing;
-//             }
             }
           }
         }
+				wavPlayer_stop();
+				HAL_TIM_Base_Stop_IT(&htim7);
 				clearStrip();
 				seeFrames();
-				wavPlayer_stop();
-        HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET);
-        HAL_Delay(1000);
+				HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET);
+				HAL_Delay(1000);
 				playerState = PLAY_Next;
-      }
-			if(playerState == PLAY_Next) {
-				clearStrip();
+			}
+			while(playerState == PLAY_Next) {
+				if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0)) {
 				songIndex++;
 				if(songIndex >= num_of_songs) songIndex = 0;
 				playerState = PLAY_Ready;
+				}
 			}
     }
   }
@@ -408,7 +402,7 @@ static void MX_TIM7_Init(void)
 
   /* USER CODE END TIM7_Init 1 */
   htim7.Instance = TIM7;
-  htim7.Init.Prescaler = 79;
+  htim7.Init.Prescaler = 107;
   htim7.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim7.Init.Period = 65535;
   htim7.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
