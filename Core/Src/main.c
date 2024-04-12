@@ -43,6 +43,7 @@ extern char tmpBuffOne[120];
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define NUM_OF_SONGS 8
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -60,8 +61,8 @@ TIM_HandleTypeDef htim6;
 TIM_HandleTypeDef htim7;
 
 /* USER CODE BEGIN PV */
-static char* staticSongArr[6] = {"smart.wav", "water.wav", "perfect.wav", "butter.wav", "smart.wav", "fade.wav"};
-char* staticTextArr[6] = {"smart.txt", "water.txt", "perfect.txt", "butter.txt", "smart.txt", "fade.txt"};
+static char* staticSongArr[NUM_OF_SONGS] = {"bang.wav", "faded.wav", "smart.wav", "water.wav", "perfect.wav", "shake.wav", "butter.wav", "crab.wav"};
+char* staticTextArr[NUM_OF_SONGS] = {"bang.txt", "faded.txt", "smart.txt", "water.txt", "perfect.txt", "shake.txt", "butter.txt", "crab.txt"};
 PLAY_State_e playerState = PLAY_Init;
 /* USER CODE END PV */
 
@@ -203,13 +204,22 @@ int main(void)
             }
             else
             {
-							//RESUME
+							//SKIP
               HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
-							clearStrip();
               HAL_Delay(1000);
-              wavPlayer_resume();
-							HAL_TIM_Base_Start_IT(&htim7);
-							playerState = PLAY_Playing;
+							if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0)) {
+								clearStrip();
+								seeFrames();
+								wavPlayer_stop();
+								HAL_TIM_Base_Stop_IT(&htim7);
+								playerState = PLAY_Next;
+							} else {
+								//RESUME
+								clearStrip();
+								wavPlayer_resume();
+								HAL_TIM_Base_Start_IT(&htim7);
+								playerState = PLAY_Playing;
+							}
             }
           }
         }
@@ -221,12 +231,9 @@ int main(void)
 				HAL_Delay(1000);
 				playerState = PLAY_Next;
 			}
-			while(playerState == PLAY_Next) {
-				if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0)) {
-				songIndex++;
-				if(songIndex >= num_of_songs) songIndex = 0;
+			if(playerState == PLAY_Next) {
+				songIndex = (songIndex + 1) % NUM_OF_SONGS;
 				playerState = PLAY_Ready;
-				}
 			}
     }
   }
