@@ -28,6 +28,7 @@
 #include "wav_player.h"
 #include "musical_bridge.h"
 #include "text_parser.h"
+#include "songs.h"
 
 /* USER CODE END Includes */
 
@@ -43,7 +44,6 @@ extern char tmpBuffOne[120];
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define NUM_OF_SONGS 8
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -61,8 +61,7 @@ TIM_HandleTypeDef htim6;
 TIM_HandleTypeDef htim7;
 
 /* USER CODE BEGIN PV */
-static char* staticSongArr[NUM_OF_SONGS] = {"bang.wav", "faded.wav", "smart.wav", "water.wav", "perfect.wav", "shake.wav", "butter.wav", "crab.wav"};
-char* staticTextArr[NUM_OF_SONGS] = {"bang.txt", "faded.txt", "smart.txt", "water.txt", "perfect.txt", "shake.txt", "butter.txt", "crab.txt"};
+bool pauseResumeToggle=0;
 PLAY_State_e playerState = PLAY_Init;
 /* USER CODE END PV */
 
@@ -126,9 +125,7 @@ int main(void)
   CS43_Enable_RightLeft(CS43_RIGHT_LEFT);
   audioI2S_setHandle(&hi2s3);
 	
-	bool isSdCardMounted=0;
-  bool pauseResumeToggle=0;
-	
+	//Clear LED Strip
 	clearStrip();
 	seeFrames();
 	
@@ -150,7 +147,7 @@ int main(void)
     {
       HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_RESET);
       f_mount(NULL, (TCHAR const*)"", 0);
-      isSdCardMounted = 0;
+			wavPlayer_stop();
 			playerState = PLAY_Init;
 			clearStrip();
 			seeFrames();
@@ -161,7 +158,6 @@ int main(void)
       if(true)
       {
         f_mount(&USBHFatFS, (const TCHAR*)USBHPath, 0);
-        isSdCardMounted = 1;
 				getNumOfWavs();
 				getAllWav(num_of_songs);
 				playerState = PLAY_Ready;

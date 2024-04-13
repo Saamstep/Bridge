@@ -8,7 +8,7 @@
 FIL fp;
 UINT br;
 
-float ledValues[21] = {100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0};
+float ledValues[21] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 char tmpBuff[64000];
 bool flag;
 //int buffNum = 0;
@@ -25,8 +25,6 @@ void parseTextFile(char* filename) {
 		if(flag) {
 				f_gets((TCHAR*)tmpBuff, sizeof(tmpBuff), &fp);
 				fillValuesArr(tmpBuff);
-				//buffer_full[buffNum] = true;
-				//buffNum = (buffNum+1) % 2;
 				counting++;
 				flag = false;
 		}
@@ -38,8 +36,13 @@ void fillValuesArr(char* line) {
 	int i = 0;
 	
 	while(token != NULL && i < 21) {
-		ledValues[i] = 20*log((float)atof(token));
+		if(i > 6 && i < 16) {
+			ledValues[i] = 1.15*(20*log((float)atof(token)));
+		} else {
+			ledValues[i] = 20*log((float)atof(token));
+		}
 		token = strtok(NULL, ",");
+		
 		i++;
 	}
 }
